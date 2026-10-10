@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Diagnostics & Planner</title>
+    <meta name="description" content="AI-Driven Performance Forecasting, Lifestyle Diagnostics, and Retentive Insights for Students.">
+    <!-- Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation & Parameters -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>⚙️ Student Diagnostics Panel</h2>
+                <p>Configure parameters to compute real-time scores and determine eligibility.</p>
+            </div>
+
+            <form id="diagnostics-form">
+                <!-- Section 1: Profile & Environment -->
+                <div class="form-section">
+                    <h3>👤 Profile & Environment</h3>
+                    <div class="form-group">
+                        <label for="age">Age: <span id="val-age">20</span></label>
+                        <input type="range" id="age" min="16" max="25" value="20" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender">
+                            <option value="Female" selected>Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="academic_level">Academic Level</label>
+                        <select id="academic_level">
+                            <option value="High School">High School</option>
+                            <option value="Undergraduate" selected>Undergraduate</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="internet_quality">Internet Quality</label>
+                        <select id="internet_quality">
+                            <option value="Average">Average</option>
+                            <option value="Good" selected>Good</option>
+                            <option value="Poor">Poor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 2: Study & Attendance -->
+                <div class="form-section">
+                    <h3>📚 Study & Attendance</h3>
+                    <div class="form-group">
+                        <label for="attendance">Attendance (%): <span id="val-attendance">85%</span></label>
+                        <input type="range" id="attendance" min="0" max="100" value="85" step="1">
+                        <small class="help-text">Mandatory cutoff: 75%</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="study_hours">Daily Study Hours: <span id="val-study_hours">6.0 hrs</span></label>
+                        <input type="range" id="study_hours" min="1.0" max="12.0" value="6.0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="self_study_hours">Self Study Hours: <span id="val-self_study_hours">3.5 hrs</span></label>
+                        <input type="range" id="self_study_hours" min="0.5" max="7.5" value="3.5" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="online_classes_hours">Online Classes: <span id="val-online_classes_hours">2.0 hrs</span></label>
+                        <input type="range" id="online_classes_hours" min="0.0" max="6.0" value="2.0" step="0.5">
+                    </div>
+                </div>
+
+                <!-- Section 3: Lifestyle & Screen Time -->
+                <div class="form-section">
+                    <h3>🎮 Lifestyle & Screen Time</h3>
+                    <div class="form-group">
+                        <label for="social_media_hours">Social Media: <span id="val-social_media_hours">2.5 hrs</span></label>
+                        <input type="range" id="social_media_hours" min="0.0" max="8.0" value="2.5" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="gaming_hours">Gaming: <span id="val-gaming_hours">1.0 hrs</span></label>
+                        <input type="range" id="gaming_hours" min="0.0" max="5.5" value="1.0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep_hours">Sleep Duration: <span id="val-sleep_hours">7.5 hrs</span></label>
+                        <input type="range" id="sleep_hours" min="4.0" max="10.0" value="7.5" step="0.5">
+                    </div>
+                </div>
+
+                <!-- Section 4: Health & Context -->
+                <div class="form-section">
+                    <h3>🧘 Health & Context</h3>
+                    <div class="form-group">
+                        <label for="exercise_minutes">Exercise (Daily Min): <span id="val-exercise_minutes">45 mins</span></label>
+                        <input type="range" id="exercise_minutes" min="0" max="150" value="45" step="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="caffeine_intake_mg">Caffeine Intake: <span id="val-caffeine_intake_mg">150 mg</span></label>
+                        <input type="range" id="caffeine_intake_mg" min="0" max="500" value="150" step="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="part_time_job">Part-Time Job?</label>
+                        <select id="part_time_job">
+                            <option value="No" selected>No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="upcoming_deadline">Upcoming Deadlines?</label>
+                        <select id="upcoming_deadline">
+                            <option value="No" selected>No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mental_health_score">Mental Health Score (1-10): <span id="val-mental_health_score">7</span></label>
+                        <input type="range" id="mental_health_score" min="1" max="10" value="7" step="1">
+                    </div>
+                </div>
+            </form>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <h1>🎓 Student Academic Diagnostics & Planner</h1>
+                <p>AI-Driven Performance Forecasting, Lifestyle Diagnostics, and Retentive Insights</p>
+                <div class="header-badges">
+                    <span class="badge">UCER Project</span>
+                    <span class="badge badge-accent">AI & ML Powered</span>
+                    <span class="badge">Streamlit & Vercel Sync</span>
+                </div>
+            </header>
+
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="tab1">🎯 Predictions & AI Insights</button>
+                <button class="tab-btn" data-tab="tab2">📊 Student Cohort Explorer</button>
+                <button class="tab-btn" data-tab="tab3">📈 Model Calibration & Metrics</button>
+            </nav>
+
+            <!-- Tab 1: Predictions & AI Insights -->
+            <section id="tab1" class="tab-content active">
+                <!-- Status Banner -->
+                <div id="status-banner" class="status-card status-pass">
+                    <div class="status-icon" id="status-icon">🎉</div>
+                    <div class="status-info">
+                        <div class="status-title" id="status-title">ELIGIBLE & PASSED</div>
+                        <div class="status-desc" id="status-desc">Loading evaluation status...</div>
+                    </div>
+                </div>
+
+                <!-- Core Diagnostic Indicators -->
+                <h3 class="section-title">📊 Core Diagnostic Indicators</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Predicted Score</div>
+                        <div class="metric-value text-green" id="metric-score">85.0%</div>
+                        <div class="metric-desc">Academic threshold: 33%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Attendance</div>
+                        <div class="metric-value text-green" id="metric-attendance">85%</div>
+                        <div class="metric-desc">Eligibility threshold: 75%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Focus Index</div>
+                        <div class="metric-value text-blue" id="metric-focus">68.4</div>
+                        <div class="metric-desc">Concentration index (1-100)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Burnout Risk</div>
+                        <div class="metric-value text-orange" id="metric-burnout">24.5%</div>
+                        <div class="metric-desc">Fatigue & stress load</div>
+                    </div>
+                </div>
+
+                <!-- Threshold Proximity Visuals -->
+                <h3 class="section-title">📉 Threshold Proximity Visuals</h3>
+                <div class="progress-section">
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>Exam Score Threshold Target</span>
+                            <span id="score-progress-text">85.0% / 100% (Passing Threshold: 33%)</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill fill-green" id="score-progress-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>Attendance Eligibility Target</span>
+                            <span id="attendance-progress-text">85% / 100% (Mandatory Threshold: 75%)</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill fill-green" id="attendance-progress-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Consultation & Strategic Roadmap -->
+                <div class="insight-section">
+                    <div class="insight-header">🧠 AI Consultation & Strategic Roadmap</div>
+                    <p class="insight-subtitle">Automated diagnostic breakdown auditing screen time, sleep, circadian hygiene, and attendance policies.</p>
+                    <div id="insights-container" class="insights-list">
+                        <!-- Dynamic Insights Inserted Here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Student Cohort Explorer -->
+            <section id="tab2" class="tab-content">
+                <h3 class="section-title">📂 Cohort Analytical Database</h3>
+                <p class="section-subtitle">Auditing a representative simulated student cohort size of <strong>5,000 records</strong>.</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Cohort Size</div>
+                        <div class="metric-value">5,000</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Average Sleep</div>
+                        <div class="metric-value">7.0 hours</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Average Exam Score</div>
+                        <div class="metric-value">52.4%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Average Productivity</div>
+                        <div class="metric-value">54.1</div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h4>Study Hours vs. Projected Exam Score</h4>
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h4>Exam Score Distribution Histogram</h4>
+                        <canvas id="histChart"></canvas>
+                    </div>
+                </div>
+
+                <h3 class="section-title">🔍 Cohort Raw Records View</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Age</th>
+                                <th>Academic Level</th>
+                                <th>Study Hours</th>
+                                <th>Sleep Hours</th>
+                                <th>Screen Time</th>
+                                <th>Focus Index</th>
+                                <th>Burnout Risk</th>
+                                <th>Exam Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cohort-table-body">
+                            <!-- Rows populated via script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 3: Model Calibration & Metrics -->
+            <section id="tab3" class="tab-content">
+                <h3 class="section-title">📊 Model Performance Validation Reports</h3>
+                <p class="section-subtitle">Regression models evaluated against student diagnostic splits (80/20 train-test ratio).</p>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ML Algorithm</th>
+                                <th>R² Score (Accuracy)</th>
+                                <th>Mean Absolute Error (MAE)</th>
+                                <th>Root Mean Squared Error (RMSE)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Linear Regression</strong></td>
+                                <td>1.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>Random Forest Regressor (Selected)</strong></td>
+                                <td>1.00</td>
+                                <td>0.16</td>
+                                <td>0.22</td>
+                            </tr>
+                            <tr>
+                                <td><strong>XGBoost Regressor</strong></td>
+                                <td>1.00</td>
+                                <td>0.18</td>
+                                <td>0.24</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-section">
+                    <div class="insight-header">🧠 Diagnostic Feature Impact Analysis</div>
+                    <ul class="impact-list">
+                        <li><strong>Productivity Score (99% Correlation):</strong> The most influential feature for forecasting final exam scores. Reflects focus efficiency and sleep recovery minus burnout.</li>
+                        <li><strong>Focus Index (98% Correlation):</strong> Concentration levels. Driven upward by active self-study and sleep hygiene; degraded by digital screen overload.</li>
+                        <li><strong>Study Hours (80% Correlation):</strong> Direct daily study time acts as the primary foundation for student academic capability.</li>
+                        <li><strong>Circadian Sleep Deficit:</strong> Sleep deviation directly suppresses the Focus Index and feeds burnout levels, creating a double-penalty effect on final grades.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <p>Developed with ❤️ by <strong>Shreyansh Tiwari, Aditya Singh & Pawni Rastogi</strong> | United College of Engineering and Research (UCER)</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
